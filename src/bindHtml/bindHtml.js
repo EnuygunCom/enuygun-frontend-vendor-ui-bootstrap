@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.bindHtml', [])
+module.exports = angular.module('ui.bootstrap.bindHtml', [])
 
   .directive('bindHtmlUnsafe', function () {
     return function (scope, element, attr) {

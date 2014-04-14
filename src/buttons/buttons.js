@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.buttons', [])
+module.exports = angular.module('ui.bootstrap.buttons', [])
 
 .constant('buttonConfig', {
   activeClass: 'active',

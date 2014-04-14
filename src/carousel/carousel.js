@@ -6,7 +6,7 @@
 * AngularJS version of an image carousel.
 *
 */
-angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
+module.exports = angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
 .controller('CarouselController', ['$scope', '$timeout', '$transition', function ($scope, $timeout, $transition) {
   var self = this,
     slides = self.slides = $scope.slides = [],

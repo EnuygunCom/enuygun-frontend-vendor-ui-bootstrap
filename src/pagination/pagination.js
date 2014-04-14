@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.pagination', [])
+module.exports = angular.module('ui.bootstrap.pagination', [])
 
 .controller('PaginationController', ['$scope', '$attrs', '$parse', function ($scope, $attrs, $parse) {
   var self = this,

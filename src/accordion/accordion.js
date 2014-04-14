@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
+module.exports = angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
 
 .constant('accordionConfig', {
   closeOthers: true

@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
+module.exports = angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
 
 .constant('datepickerConfig', {
   formatDay: 'dd',

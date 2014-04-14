@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.dropdown', [])
+module.exports = angular.module('ui.bootstrap.dropdown', [])
 
 .constant('dropdownConfig', {
   openClass: 'open'

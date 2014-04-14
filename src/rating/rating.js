@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.rating', [])
+module.exports = angular.module('ui.bootstrap.rating', [])
 
 .constant('ratingConfig', {
   max: 5,

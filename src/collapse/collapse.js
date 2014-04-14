@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.collapse', ['ui.bootstrap.transition'])
+module.exports = angular.module('ui.bootstrap.collapse', ['ui.bootstrap.transition'])
 
   .directive('collapse', ['$transition', function ($transition) {
 

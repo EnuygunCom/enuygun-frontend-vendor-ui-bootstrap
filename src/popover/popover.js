@@ -3,7 +3,7 @@
  * function, placement as a function, inside, support for more triggers than
  * just mouse enter/leave, html popovers, and selector delegatation.
  */
-angular.module( 'ui.bootstrap.popover', [ 'ui.bootstrap.tooltip' ] )
+module.exports = angular.module( 'ui.bootstrap.popover', [ 'ui.bootstrap.tooltip' ] )
 
 .directive( 'popoverPopup', function () {
   return {

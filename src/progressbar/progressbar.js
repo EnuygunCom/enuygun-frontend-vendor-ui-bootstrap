@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.progressbar', [])
+module.exports = angular.module('ui.bootstrap.progressbar', [])
 
 .constant('progressConfig', {
   animate: true,

@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.timepicker', [])
+module.exports = angular.module('ui.bootstrap.timepicker', [])
 
 .constant('timepickerConfig', {
   hourStep: 1,

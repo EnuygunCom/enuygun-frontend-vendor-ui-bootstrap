@@ -1,4 +1,4 @@
-angular.module('ui.bootstrap.transition', [])
+module.exports = angular.module('ui.bootstrap.transition', [])
 
 /**
  * $transition service provides a consistent interface to trigger CSS 3 transitions and to be informed when they complete.
