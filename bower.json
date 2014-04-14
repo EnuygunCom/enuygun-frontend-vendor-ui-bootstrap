@@ -1,0 +1,15 @@
+{
+    "name": "enuygun-frontend-vendor-ui-bootsrap",
+    "version": "1.0.0",
+    "private": true,
+    "keywords": "the fork of angular ui bootstrap, common js style",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "bower_components"
+    ],
+    "dependencies": {
+        "angular": "1.*",
+	"bootstrap":"3.*"
+    }
+}
