@@ -92,8 +92,13 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
         active: 'activeIdx',
         select: 'select(activeIdx)',
         query: 'query',
-        position: 'position'
+        position: 'position',
+        'on-typeahead-active-callback': 'onTypeaheadActiveCallback(activeIdx)'
       });
+
+      scope.onTypeaheadActiveCallback = function(activeIdx) {
+        scope.onTypeaheadActive(scope.matches[activeIdx].model);
+      };
       //custom item template
       if (angular.isDefined(attrs.typeaheadTemplateUrl)) {
         popUpEl.attr('template-url', attrs.typeaheadTemplateUrl);
@@ -170,7 +175,7 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
       //we need to propagate user's query so we can higlight matches
       scope.query = undefined;
 
-      //Declare the timeout promise var outside the function scope so that stacked calls can be cancelled later 
+      //Declare the timeout promise var outside the function scope so that stacked calls can be cancelled later
       var timeoutPromise;
 
       //plug into $parsers pipeline to open a typeahead on view changes initiated from DOM
@@ -234,6 +239,9 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
 
       scope.select = function (activeIdx) {
         //called from within the $digest() cycle
+        if(scope.isNoMatchString && scope.isNoMatchString(scope.matches[activeIdx].model.label)) {
+          return;
+        }
         var locals = {};
         var model, item;
 
@@ -257,37 +265,39 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
 
       //bind keyboard events: arrows up(38) / down(40), enter(13) and tab(9), esc(27)
       element.bind('keydown', function (evt) {
-
         //typeahead is open and an "interesting" key was pressed
         if (scope.matches.length === 0 || HOT_KEYS.indexOf(evt.which) === -1) {
           return;
         }
-
         evt.preventDefault();
-
         if (evt.which === 40) {
           scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
-          scope.$digest();
-
-        } else if (evt.which === 38) {
-          scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
-          scope.$digest();
-
-        } else if (evt.which === 13 || evt.which === 9) {
-          scope.$apply(function () {
-            scope.select(scope.activeIdx);
-          });
-
-        } else if (evt.which === 27) {
-          evt.stopPropagation();
-
-          resetMatches();
-          scope.$digest();
-        }
+          if( scope.matches && scope.activeIdx && scope.matches[scope.activeIdx] &&
+            scope.matches[scope.activeIdx].model) {
+              scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
+            }
+            scope.$digest();
+          } else if (evt.which === 38) {
+            scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
+            if( scope.matches && scope.activeIdx && scope.matches[scope.activeIdx] &&
+              scope.matches[scope.activeIdx].model) {
+                  scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
+              }
+              scope.$digest();
+          } else if (evt.which === 13 || evt.which === 9) {
+              scope.$apply(function () {
+                scope.select(scope.activeIdx);
+              });
+          } else if (evt.which === 27) {
+            evt.stopPropagation();
+            resetMatches();
+            scope.$digest();
+          }
       });
 
       element.bind('blur', function (evt) {
         hasFocus = false;
+        scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
       });
 
       // Keep reference to click handler to unbind it.
@@ -323,7 +333,8 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
         query:'=',
         active:'=',
         position:'=',
-        select:'&'
+        select:'&',
+        onTypeaheadActiveCallback: '&'
       },
       replace:true,
       templateUrl:'template/typeahead/typeahead-popup.html',
@@ -337,6 +348,10 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
 
         scope.isActive = function (matchIdx) {
           return scope.active == matchIdx;
+        };
+
+        scope.onTypeaheadActive = function(activeIdx) {
+          scope.onTypeaheadActiveCallback({activeIdx:activeIdx});
         };
 
         scope.selectActive = function (matchIdx) {
