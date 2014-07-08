@@ -97,9 +97,12 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
       });
 
       scope.onTypeaheadActiveCallback = function(activeIdx) {
-        scope.onTypeaheadActive(scope.matches[activeIdx].model);
+        if(scope.matches && activeIdx !== undefined && scope.matches[activeIdx] &&
+           scope.matches[activeIdx].model) {
+            scope.onTypeaheadActive(scope.matches[activeIdx].model);
+        }
       };
-      //custom item template
+        //custom item template
       if (angular.isDefined(attrs.typeaheadTemplateUrl)) {
         popUpEl.attr('template-url', attrs.typeaheadTemplateUrl);
       }
@@ -239,8 +242,11 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
 
       scope.select = function (activeIdx) {
         //called from within the $digest() cycle
-        if(scope.isNoMatchString && scope.isNoMatchString(scope.matches[activeIdx].model.label)) {
-          return;
+        if(scope.isNoMatchString && scope.matches && activeIdx !== undefined &&
+           scope.matches[activeIdx] && scope.matches[activeIdx].model &&
+           scope.matches[activeIdx].model.label &&
+           scope.isNoMatchString(scope.matches[activeIdx].model.label)) {
+            return;
         }
         var locals = {};
         var model, item;
@@ -272,14 +278,14 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
         evt.preventDefault();
         if (evt.which === 40) {
           scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
-          if( scope.matches && scope.activeIdx && scope.matches[scope.activeIdx] &&
+          if( scope.matches && scope.activeIdx !== undefined && scope.matches[scope.activeIdx] &&
             scope.matches[scope.activeIdx].model) {
               scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
             }
             scope.$digest();
           } else if (evt.which === 38) {
             scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
-            if( scope.matches && scope.activeIdx && scope.matches[scope.activeIdx] &&
+            if(scope.matches && scope.activeIdx !== undefined && scope.matches[scope.activeIdx] &&
               scope.matches[scope.activeIdx].model) {
                   scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
               }
@@ -296,8 +302,11 @@ module.exports = angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.positio
       });
 
       element.bind('blur', function (evt) {
-        hasFocus = false;
-        scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
+          hasFocus = false;
+          if(scope.matches && scope.activeIdx !== undefined && scope.matches[scope.activeIdx] &&
+            scope.matches[scope.activeIdx].model) {
+            scope.onTypeaheadKeyDown(scope.matches[scope.activeIdx].model);
+        }
       });
 
       // Keep reference to click handler to unbind it.
